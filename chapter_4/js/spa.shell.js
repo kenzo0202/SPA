@@ -86,7 +86,7 @@ spa.shell = (function () {
         }catch(error){
             $.uriAnchor.setAnchor(stateMap.anchor_map,null,true);
             bool_return = false;
-            };
+            }
         //URIの変更終了
         
         return bool_return;
@@ -116,7 +116,7 @@ spa.shell = (function () {
           || _s_chat_previous !== _s_chat_proposed){
             s_chat_proposed = anchor_map_proposed.chat;
             switch(s_chat_proposed){
-                case 'open':
+                case 'opened':
                     is_ok = spa.chat.setSliderPosition('opened');
                 break;
                 case 'closed':
@@ -129,7 +129,7 @@ spa.shell = (function () {
             }
         }
         //スライダーの変更が拒否された場合にアンカーをもとに戻す処理を開始
-        if(is_ok){
+        if(!is_ok){
             if(anchor_map_previous){
                 $.uriAnchor.setAnchor(anchor_map_previous,null,true);
                 stateMap.anchor_map = anchor_map_previous;
@@ -138,7 +138,7 @@ spa.shell = (function () {
                 $.uriAnchor.setAnchor(anchor_map_proposed,null,true);
             }
         }
-        return false
+        return false;
     };
         
     //コールバックメソッド/setChatAnchor/開始

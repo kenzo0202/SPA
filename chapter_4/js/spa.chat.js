@@ -24,8 +24,8 @@ spa.chat = (function(){
           +'</div>'
         +'<div class="spa-chat-closer">x</div>'
         +'<div class="spa-chat-sizer">'
-          +'<div class="spa-chat-msgs></div>'
-          +'<div class="spa-chat-box>'
+          +'<div class="spa-chat-msgs"></div>'
+          +'<div class="spa-chat-box">'
           +'<input type="text"/>'
           +'<div>send</div>'
         +'</div>'
@@ -135,7 +135,7 @@ spa.chat = (function(){
     setSliderPosition = function(position_type,callback){
         var height_px,animate_time,slider_title,toggle_text;
         
-        if(stateMap.position_type = position_type){
+        if(stateMap.position_type === position_type){
             return true;
         }
         switch(position_type){
