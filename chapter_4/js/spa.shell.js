@@ -169,7 +169,7 @@ spa.shell = (function () {
             chat_model: spa.model.chat,
             people_model: spa.model.people
         });
-        spa.chat.initModule(jQueryMap.$containeer);
+        spa.chat.initModule(jQueryMap.$container);
         
         
         $(window).bind("hashchange",onHashchange)

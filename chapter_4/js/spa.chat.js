@@ -64,7 +64,7 @@ spa.chat = (function(){
         },
         jQueryMap ={},
         
-        setJqeuryMap,getEmsize,setPxSizes,setSliderPosition,onClickToggle,configModule,initModule;
+        setJqueryMap,getEmsize,setPxSizes,setSliderPosition,onClickToggle,configModule,initModule;
     //モジュールスコープ終了
     
     //ユーティリティーメソッド開始
@@ -85,7 +85,7 @@ spa.chat = (function(){
     
     //DOMメソッド開始
     //DOMメソッド/setJQueryMap/開始
-    setJqeuryMap = function(){
+    setJqueryMap = function(){
         var
         $append_target = stateMap.$append_target,
         $slider = $append_target.find('.spa-chat');
@@ -223,9 +223,9 @@ spa.chat = (function(){
     //戻り値true
     
     initModule = function($append_target){
-        $append_target.html(configMap.main_html);
+        $append_target.append(configMap.main_html);
         stateMap.$append_target = $append_target;
-        setJqeuryMap();
+        setJqueryMap();
         setPxSizes();
     
     

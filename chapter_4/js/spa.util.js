@@ -44,10 +44,10 @@ spa.util = (function(){
                     config_map[key_name] = input_map[key_name];
                 }else{
                     error = MakeError('Bad Input','Setting config key |' + key_name + '|is not supported')
-                };
-                throw error;
+                    throw error;
             }
         }
+    }
     }
     
     return {
