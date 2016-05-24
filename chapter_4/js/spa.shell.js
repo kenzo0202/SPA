@@ -11,6 +11,7 @@ spa.shell = (function () {
     //モジュールスコープ変数開始
     var 
     configMap = {
+        resize_interval : 200,
         anchor_schema_map : {
             chat:{opened : true,closed : true}
         },
@@ -28,10 +29,12 @@ spa.shell = (function () {
         + '<div class="spa-shell-modal"></div>'
     },
         stateMap = {
+            $container : undefined,
             anchor_map : {},
+            resize_idto : undefined
         },
         jQueryMap = {},
-        copyAnchorMap,setJqueryMap,changeAnchorPart,onHashchange,initModule,setChatAnchor;
+        copyAnchorMap,setJqueryMap,changeAnchorPart,onHashchange,initModule,setChatAnchor,onResize;
     //モジュールスコープ変数終了
     //ユーティリティーメソッド開始（ページとやりとりをしないメソッド）
     //下の階層の値も再帰的にマージ（ディープコピー）してほしい場合は、extend() の第1引数に true を指定します。
@@ -140,6 +143,16 @@ spa.shell = (function () {
         }
         return false;
     };
+    
+    onResize = function(){
+        if(stateMap.resize_idto){return true};
+        
+        spa.chat.handleResize();
+        stateMap.resize_idto = setTimeout(function(){stateMap.resize_idto = undefined},configMap.resize_interval);
+        console.log('OK');
+        
+        return true;
+    }
         
     //コールバックメソッド/setChatAnchor/開始
     //用例：setChatAnchor('closed')
@@ -172,8 +185,7 @@ spa.shell = (function () {
         spa.chat.initModule(jQueryMap.$container);
         
         
-        $(window).bind("hashchange",onHashchange)
-        .trigger("hashchange");
+        $(window).bind("resize",onResize).bind("hashchange",onHashchange).trigger("hashchange");
     };
     //パブリックメソッド終了
     return {initModule: initModule};

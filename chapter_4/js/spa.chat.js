@@ -45,10 +45,12 @@ spa.chat = (function(){
     },
         slider_open_time:250,
         slider_close_time:250,
-        slider_opened_em:16,
+        slider_opened_em:18,
         slider_closed_em:2,
         slider_opened_title:'Click to close',
         slider_closed_title:'Click to open',
+        slider_opened_min_em:10,
+        window_height_min_em:20,
         
         chat_model: null,
         people_model: null,
@@ -64,7 +66,7 @@ spa.chat = (function(){
         },
         jQueryMap ={},
         
-        setJqueryMap,getEmsize,setPxSizes,setSliderPosition,onClickToggle,configModule,initModule;
+        setJqueryMap,getEmsize,setPxSizes,setSliderPosition,onClickToggle,configModule,initModule,removeSlider,handleResize;
     //モジュールスコープ終了
     
     //ユーティリティーメソッド開始
@@ -102,10 +104,11 @@ spa.chat = (function(){
     //DOMメソッド/setJQueryMap/終了
     //DOMメソッド/setPxSizes/開始
     setPxSizes = function(){
-        var px_per_em,opened_height_em;
+        var px_per_em,opened_height_em,window_height_em;
         px_per_em = getEmsize(jQueryMap.$slider.get(0));
+        window_height_em = Math.floor( ($(window).height()/ px_per_em )+ 0.5);
         
-        opened_height_em = configMap.slider_opened_em;
+        opened_height_em = window_height_em > configMap.window_height_min_em ? configMap.slider_opened_em : configMap.slider_opened_min_em;
         
         stateMap.px_per_em =px_per_em;
         stateMap.slider_closed_px = configMap.slider_closed_em*px_per_em;
@@ -236,11 +239,47 @@ spa.chat = (function(){
     return true;
     }
     //パブリックメソッドinitModule終了
+    
+    //パブリックメソッドremoveSlider開始
+    //目的: DOM要素chatSliderを削除する　初期状態に戻す　コールバックや他のデータへのポインタを削除する
+    removeSlider = function(){
+        //初期化と状態を解除する
+        //DOMコンテナを削除する。これはイベントのバインディングも削除する
+        if(jQueryMap.$slider){
+            jQueryMap.$slider.remove();
+            jQueryMap = {}
+        }
+        
+        stateMap.$append_target = null;
+        stateMap.position_type = 'closed';
+        
+        
+        configMap.chat_model = null;
+        configMap.people_model = null;
+        configMap.set_chat_anchor = null;
+        return true;
+    }
+    
+    //パブリックメソッド/handleResize/開始
+    //目的:ウィンドウリサイズイベントに対し、必要に応じてこのモジュールが提供する表示を調整する
+    
+    handleResize = function(){
+        //スライダーがなければ何もしない
+        if(!jQueryMap.$slider){return false;}
+        
+        setPxSizes();
+        if(stateMap.position_type === 'opened'){
+            jQueryMap.$slider.css({height: stateMap.slider_opened_px});
+        }
+        return true;
+    }
         
     
     return{
         setSliderPosition: setSliderPosition,
         configModule: configModule,
-        initModule:initModule
+        initModule:initModule,
+        removeSlider: removeSlider,
+        handleResize: handleResize
     };
 }());
